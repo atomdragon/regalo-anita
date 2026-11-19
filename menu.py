@@ -2,12 +2,11 @@
 """
 Menu Principal - Animaciones ASCII
 Permite seleccionar y reproducir tanto el Árbol de Navidad ASCII como la animación de Hachiware (Chiikawa),
-así como lanzar la versión Web interactiva o ver el video original.
+así como lanzar la versión Web interactiva.
 """
 import os
 import sys
 import webbrowser
-import subprocess
 
 def show_terminal_menu():
     while True:
@@ -19,11 +18,10 @@ def show_terminal_menu():
   1. 🎄 Árbol de Navidad 3D ASCII (christmas_tree.py)
   2. 🐱 Hachiware - ひとりごつ / Chiikawa (hachiware.py)
   3. 🌐 Abrir Menú Web Completo en Navegador (index.html)
-  4. 🎬 Ver Video Original de Hachiware (MP4)
-  5. 🚪 Salir
+  4. 🚪 Salir
 ============================================================
 """)
-        choice = input("Selecciona una opción [1-5]: ").strip()
+        choice = input("Selecciona una opción [1-4]: ").strip()
 
         if choice == "1":
             print("\nIniciando Árbol de Navidad ASCII... (Presiona Esc dentro de la ventana para volver al menú)")
@@ -48,7 +46,6 @@ def show_terminal_menu():
             import socketserver
 
             port = 8080
-            # Intentar lanzar servidor web local
             def start_srv():
                 try:
                     handler = http.server.SimpleHTTPRequestHandler
@@ -65,21 +62,6 @@ def show_terminal_menu():
             webbrowser.open(web_url)
             input("Presiona Enter para volver al menú...")
         elif choice == "4":
-            video_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "video", "hachiware.mp4"))
-            print(f"\nAbriendo video original: {video_path}")
-            try:
-                # Intentar abrir con el reproductor del sistema
-                if sys.platform.startswith('linux'):
-                    subprocess.Popen(['xdg-open', video_path])
-                elif sys.platform == 'darwin':
-                    subprocess.Popen(['open', video_path])
-                elif sys.platform.startswith('win'):
-                    os.startfile(video_path)
-            except Exception as e:
-                # Fallback al navegador
-                webbrowser.open(f"file://{video_path}")
-            input("Presiona Enter para continuar...")
-        elif choice == "5":
             print("\n¡Hasta pronto!")
             sys.exit(0)
         else:

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ASCII Studio - Menú de Animaciones</title>
+  <title>ASCII Studio - Menú Principal</title>
   <style>
     :root {
       --bg: #0a0c12;
@@ -32,20 +32,18 @@
       user-select: none;
     }
 
-    /* CRT scanlines effect */
     body.crt::after {
       content: " ";
       display: block;
       position: fixed;
       top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%),
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
       z-index: 999;
       background-size: 100% 3px, 6px 100%;
       pointer-events: none;
     }
 
-    /* Navigation Header */
     header {
       background: rgba(17, 20, 32, 0.95);
       backdrop-filter: blur(8px);
@@ -70,6 +68,7 @@
       color: var(--accent);
       letter-spacing: 1px;
       text-transform: uppercase;
+      cursor: pointer;
     }
 
     .brand .dot {
@@ -143,13 +142,6 @@
       color: var(--accent);
     }
 
-    .icon-btn.active {
-      background: var(--accent);
-      color: #0a0c12;
-      font-weight: bold;
-    }
-
-    /* Main Content Area */
     main {
       flex: 1;
       display: flex;
@@ -160,7 +152,7 @@
     .view-panel {
       display: none;
       width: 100%;
-      height: calc(100vh - 65px);
+      min-height: calc(100vh - 58px);
       position: relative;
     }
 
@@ -170,217 +162,200 @@
       align-items: center;
     }
 
-    /* Christmas Tree View */
+    /* ================= PÁGINA PRINCIPAL (MENÚ) ================= */
+    #view-home {
+      background: radial-gradient(circle at center, #131829 0%, #0a0c12 100%);
+      padding: 30px 20px;
+      flex-direction: column;
+    }
+
+    .home-hero {
+      text-align: center;
+      max-width: 760px;
+      margin-bottom: 36px;
+    }
+
+    .home-ascii-banner {
+      color: var(--accent);
+      font-size: 11px;
+      line-height: 1.2;
+      margin-bottom: 18px;
+      text-shadow: 0 0 12px var(--accent-glow);
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .home-hero h1 {
+      font-size: 26px;
+      color: #f8fafc;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .home-hero p {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      width: 100%;
+      max-width: 820px;
+    }
+
+    .home-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      padding: 26px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .home-card:hover {
+      background: #161c2e;
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75), 0 0 20px var(--accent-glow);
+    }
+
+    .home-card.hachi-card:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75), 0 0 20px rgba(56, 189, 248, 0.25);
+    }
+
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #1a2236;
+      color: var(--accent);
+      border: 1px solid #2c3957;
+    }
+
+    .hachi-card .card-badge { color: var(--cyan); }
+    .card-icon { font-size: 32px; }
+    .card-title { font-size: 19px; font-weight: bold; color: #f8fafc; margin-bottom: 6px; }
+    .card-desc { font-size: 12.5px; color: #94a3b8; line-height: 1.6; }
+
+    .card-action-bar {
+      padding-top: 12px;
+      border-top: 1px solid #1e2538;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .hachi-card .card-action-bar { color: var(--cyan); }
+
+    /* ================= VISTA 1: CHRISTMAS TREE ================= */
     #view-tree {
       background: #0a0c12;
       position: relative;
       overflow: hidden;
     }
 
-    #scene {
+    #scene, #hachi-canvas {
       display: block;
       max-width: 98vw;
-      max-height: calc(100vh - 85px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-      border-radius: 6px;
+      max-height: calc(100vh - 95px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+      border-radius: 8px;
+      border: 1px solid #1e2538;
     }
 
-    .tree-controls {
+    .scene-controls {
       position: absolute;
       bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       gap: 10px;
-      background: rgba(17, 20, 32, 0.85);
+      background: rgba(17, 20, 32, 0.88);
       backdrop-filter: blur(8px);
       padding: 8px 16px;
       border-radius: 30px;
       border: 1px solid var(--panel-border);
       z-index: 10;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .tree-controls button {
+    .scene-controls button {
       background: transparent;
       border: 1px solid #28334e;
       color: #cbd5e1;
       border-radius: 20px;
-      padding: 4px 12px;
+      padding: 5px 13px;
       font-family: inherit;
       font-size: 12px;
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .tree-controls button:hover {
+    .scene-controls button:hover {
       border-color: var(--accent);
       color: var(--accent);
     }
 
-    /* Hachiware View */
+    /* ================= VISTA 2: HACHIWARE ASCII + AUDIO ================= */
     #view-hachiware {
-      background: #000;
-      padding: 10px;
-      gap: 20px;
+      background: #0a0c12;
+      padding: 16px;
       overflow-y: auto;
-      justify-content: center;
-      align-items: flex-start;
+      align-items: center;
     }
 
-    .hachiware-container {
+    .hachiware-layout {
       display: flex;
       flex-direction: row;
-      gap: 20px;
-      max-width: 1300px;
+      gap: 24px;
+      max-width: 1320px;
       width: 100%;
-      height: calc(100vh - 85px);
       justify-content: center;
-      align-items: stretch;
+      align-items: center;
     }
 
-    @media (max-width: 950px) {
-      .hachiware-container {
-        flex-direction: column;
-        height: auto;
-      }
+    @media (max-width: 1024px) {
+      .hachiware-layout { flex-direction: column; }
     }
 
-    /* Phone / Terminal Mockup */
-    .terminal-frame {
-      background: #050608;
-      border: 2px solid #222938;
-      border-radius: 12px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 20px rgba(56, 189, 248, 0.1);
-      width: 480px;
-      max-width: 100%;
+    .canvas-wrapper {
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .terminal-header {
-      background: #0d111a;
-      border-bottom: 1px solid #1a2233;
-      padding: 10px 14px;
-      font-size: 12px;
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      color: #94a3b8;
     }
 
-    .terminal-header .left-info {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .terminal-header .script-title {
-      color: #fff;
-      font-weight: bold;
-    }
-
-    .terminal-header .song-title {
-      color: var(--pink);
-    }
-
-    .terminal-header .letters-count {
-      color: var(--dim);
-    }
-
-    .terminal-header .right-info {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--green);
-      font-weight: bold;
-    }
-
-    .media-viewport {
-      position: relative;
-      background: #000;
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 400px;
-      overflow: hidden;
-    }
-
-    .media-viewport video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .terminal-divider {
-      background: #0f131d;
-      border-top: 1px solid #1a2233;
-      border-bottom: 1px solid #1a2233;
-      padding: 6px 14px;
-      font-size: 11px;
-      display: flex;
-      justify-content: space-between;
-      color: #94a3b8;
-    }
-
-    .terminal-divider .status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--accent);
-    }
-
-    /* Live Code View */
-    .code-editor {
-      background: #07090e;
-      height: 240px;
-      overflow: hidden;
-      padding: 8px 12px;
-      font-size: 11px;
-      line-height: 1.45;
-      color: #a0aec0;
-      position: relative;
-      border-top: 1px solid #141b2a;
-    }
-
-    .code-editor pre {
-      margin: 0;
-      font-family: var(--mono);
-      white-space: pre;
-    }
-
-    .code-editor .ln {
-      color: #4a5568;
-      display: inline-block;
-      width: 28px;
-      text-align: right;
-      margin-right: 12px;
-      user-select: none;
-    }
-
-    .code-editor .kw { color: #f472b6; font-weight: bold; }
-    .code-editor .fn { color: #60a5fa; }
-    .code-editor .str { color: #34d399; }
-    .code-editor .num { color: #fbbf24; }
-    .code-editor .cm { color: #64748b; font-style: italic; }
-
-    /* Hachiware Controls and Lyrics Sidebar */
     .hachiware-sidebar {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 16px;
-      max-width: 600px;
+      max-width: 440px;
+      width: 100%;
     }
 
     .panel-card {
       background: var(--panel);
       border: 1px solid var(--panel-border);
-      border-radius: 10px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 18px;
     }
 
     .panel-title {
@@ -398,7 +373,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       flex-wrap: wrap;
     }
 
@@ -406,7 +381,7 @@
       background: #182032;
       border: 1px solid #283552;
       color: #e2e8f0;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 6px;
       font-family: inherit;
       font-size: 12px;
@@ -450,9 +425,8 @@
       height: 6px;
     }
 
-    /* Karaoke Lyrics Box */
     .lyrics-container {
-      max-height: 280px;
+      max-height: 340px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -465,7 +439,7 @@
       border-radius: 8px;
       background: #151a2a;
       border-left: 3px solid #2d3748;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       cursor: pointer;
     }
 
@@ -482,171 +456,16 @@
     }
 
     .lyric-jp {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: bold;
       color: #f1f5f9;
       margin-bottom: 4px;
     }
 
-    .lyric-item.active .lyric-jp {
-      color: var(--accent);
-    }
+    .lyric-item.active .lyric-jp { color: var(--accent); }
+    .lyric-es { font-size: 12px; color: #94a3b8; }
+    .lyric-time { font-size: 10px; color: var(--dim); margin-top: 3px; }
 
-    .lyric-es {
-      font-size: 12px;
-      color: #94a3b8;
-    }
-
-    .lyric-time {
-      font-size: 10px;
-      color: var(--dim);
-      margin-top: 3px;
-    }
-
-    /* Video Player View */
-    #view-video {
-      background: #05070c;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      gap: 16px;
-    }
-
-    .cinema-box {
-      width: 480px;
-      max-width: 95vw;
-      height: calc(100vh - 150px);
-      background: #000;
-      border-radius: 12px;
-      border: 1px solid #1e293b;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .cinema-box video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #000;
-    }
-
-    /* Modal Navigation Menu */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(10, 12, 18, 0.85);
-      backdrop-filter: blur(10px);
-      z-index: 500;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .modal-overlay.open {
-      display: flex;
-    }
-
-    .menu-modal {
-      background: #111522;
-      border: 1px solid #243048;
-      border-radius: 14px;
-      width: 720px;
-      max-width: 100%;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
-      overflow: hidden;
-    }
-
-    .modal-top {
-      background: #161c2d;
-      padding: 16px 20px;
-      border-bottom: 1px solid #243048;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-top h2 {
-      font-size: 16px;
-      color: var(--accent);
-      letter-spacing: 1px;
-    }
-
-    .close-btn {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .close-btn:hover { color: #fff; }
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 16px;
-      padding: 24px;
-    }
-
-    .menu-card {
-      background: #151a2b;
-      border: 1px solid #283552;
-      border-radius: 10px;
-      padding: 20px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .menu-card:hover {
-      background: #1c233a;
-      border-color: var(--cyan);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    }
-
-    .card-badge {
-      align-self: flex-start;
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 12px;
-      background: #1e293b;
-      color: var(--cyan);
-      border: 1px solid #334155;
-    }
-
-    .card-title {
-      font-size: 16px;
-      font-weight: bold;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .card-desc {
-      font-size: 12px;
-      color: #94a3b8;
-      line-height: 1.5;
-    }
-
-    .card-footer {
-      margin-top: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      color: var(--accent);
-    }
-
-    /* Floating Toast */
     #toast {
       position: fixed;
       bottom: 24px;
@@ -665,139 +484,119 @@
       pointer-events: none;
     }
 
-    #toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    #toast.show { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body class="crt">
 
-  <!-- Header con Menú Principal -->
   <header>
-    <div class="brand">
+    <div class="brand" onclick="switchView('home')" title="Volver al Menú Principal">
       <div class="dot"></div>
       <span>ASCII Studio</span>
     </div>
 
-    <!-- Pestañas de selección de animaciones -->
     <nav class="nav-tabs">
-      <button class="tab-btn active" onclick="switchView('tree')">
-        <span>🎄</span> Árbol de Navidad 3D
+      <button class="tab-btn active" id="tab-home" onclick="switchView('home')">
+        <span>🏠</span> Inicio
       </button>
-      <button class="tab-btn" onclick="switchView('hachiware')">
-        <span>🐱</span> Hachiware (Chiikawa)
+      <button class="tab-btn" id="tab-tree" onclick="switchView('tree')">
+        <span>🎄</span> Christmas Tree
       </button>
-      <button class="tab-btn" onclick="switchView('video')">
-        <span>🎬</span> Ver Video Original
-      </button>
-      <button class="tab-btn" onclick="openMenuModal()">
-        <span>📂</span> Menú [M]
+      <button class="tab-btn" id="tab-hachiware" onclick="switchView('hachiware')">
+        <span>🐱</span> Hachiware
       </button>
     </nav>
 
-    <!-- Herramientas globales -->
     <div class="header-actions">
-      <button class="icon-btn" onclick="toggleCRT()" title="Alternar efecto monitor CRT / Scanlines" id="crt-btn">
-        CRT: ON
-      </button>
-      <button class="icon-btn" onclick="toggleFullscreen()" title="Pantalla Completa [F]">
-        ⛶ Pantalla
-      </button>
+      <button class="icon-btn" onclick="toggleCRT()" id="crt-btn">CRT: ON</button>
+      <button class="icon-btn" onclick="toggleFullscreen()">⛶ Pantalla</button>
     </div>
   </header>
 
-  <!-- Contenedor Principal de Vistas -->
   <main>
-    <!-- VISTA 1: ÁRBOL DE NAVIDAD 3D -->
-    <div id="view-tree" class="view-panel active">
-      <canvas id="scene"></canvas>
-
-      <div class="tree-controls">
-        <button onclick="toggleTreePause()" id="tree-play-btn">⏸ Pausar</button>
-        <button onclick="restartTree()">↺ Reiniciar</button>
-        <button onclick="takeTreeScreenshot()">📸 Captura</button>
-        <button onclick="switchView('hachiware')">Siguiente: 🐱 Hachiware ➔</button>
+    <!-- PÁGINA PRINCIPAL (MENÚ DE INICIO) -->
+    <section id="view-home" class="view-panel active">
+      <div class="home-hero">
+        <div class="home-ascii-banner">
+   ___   _____  _____  _____  _____    _____  ______  __  __  ____   ____  _____
+  / _ \ / ____|/ ____||_   _||_   _|  / ____||_    _||  |  ||  _ \ |_  _|/  _  \
+ | |_| |\___ \| |       | |    | |   | (___    |  |  |  |  || | \ |  || |  | |  |
+ |  _  | ___) | |____  _| |_  _| |_   \___ \   |  |  |  |__|| |_/ | _||_|  |_|  |
+ |_| |_||____/ \_____||_____||_____|  |____/   |__|   \____/ |____/ |____|\_____/
+        </div>
+        <h1>MENÚ PRINCIPAL DE ANIMACIONES ASCII</h1>
+        <p>Selecciona la escena interactiva en arte ASCII que deseas ejecutar.</p>
       </div>
-    </div>
 
-    <!-- VISTA 2: HACHIWARE ASCII ANIMATION + MÚSICA + CÓDIGO -->
-    <div id="view-hachiware" class="view-panel">
-      <div class="hachiware-container">
-        
-        <!-- Marco simulador de terminal como en el video -->
-        <div class="terminal-frame">
-          <div class="terminal-header">
-            <div class="left-info">
-              <span class="script-title">hachiware.py · ascii</span>
-              <span class="song-title" id="hachi-shot-info">shot 01/25  ♪ ひとりごつ</span>
-              <span class="letters-count" id="hachi-letters">letters 7,159</span>
+      <div class="home-grid">
+        <div class="home-card" onclick="switchView('tree')">
+          <div>
+            <div class="card-top-row">
+              <span class="card-badge">christmas_tree.py</span>
+              <span class="card-icon">🎄</span>
             </div>
-            <div class="right-info">
-              <span class="dot" style="background:#4ade80;"></span>
-              <span id="hachi-time-hud">• t 00.00s</span>
+            <div class="card-title">ASCII Christmas Tree 3D</div>
+            <div class="card-desc">
+              Renderizado 3D en tiempo real con proyección de perspectiva, ramas fractales nevadas, guirnaldas de espumillón, esferas, regalos, estrella superior brillante y nieve cayendo.
             </div>
           </div>
-
-          <!-- Reproductor de animación ASCII -->
-          <div class="media-viewport">
-            <video id="hachiware-video" src="video/hachiware.mp4" playsinline loop preload="auto"></video>
-          </div>
-
-          <!-- Divisor de estado -->
-          <div class="terminal-divider">
-            <span style="font-weight:bold; color:#cbd5e1;">hachiware.py</span>
-            <span class="status">
-              <span class="dot" style="width:7px; height:7px;"></span>
-              <span id="hachi-fps-hud">running · 30 fps</span>
-            </span>
-          </div>
-
-          <!-- Visor de código fuente de hachiware.py en vivo -->
-          <div class="code-editor" id="code-scroll-box">
-            <pre><code id="live-code-content">
-<span class="ln">63</span><span class="kw">def</span> <span class="fn">classify</span>(rgb):
-<span class="ln">64</span>    <span class="cm">"""Split pixels into ink (-1) and paints from colour alone."""</span>
-<span class="ln">65</span>    c = rgb.astype(int)
-<span class="ln">66</span>    r, g, b = c[..., 0], c[..., 1], c[..., 2]
-<span class="ln">67</span>    lum, chroma = c.mean(-1), c.max(-1) - c.min(-1)
-<span class="ln">68</span>    k = np.full(r.shape, PAPER)
-<span class="ln">69</span>    k[(g - r > 8) & (g - b > 8)] = LEAF
-<span class="ln">70</span>    k[(r - b > 35) & (r > g + 8) & (lum < 215)] = WOOD
-<span class="ln">71</span>    k[(b - r > 25) & (b > 110)] = HAIR
-<span class="ln">72</span>    k[((r - g > 22) & (r > 190) & (b > g - 6))] = BLUSH
-<span class="ln">73</span>    k[(lum > 222) & (chroma <= 3)] = FUR  <span class="cm"># Hachiware is pure grey-white</span>
-<span class="ln">74</span>    k[(lum < 100) | ((lum < 140) & (chroma < 35))] = -1  <span class="cm"># dark brown ink</span>
-<span class="ln">75</span>    <span class="kw">return</span> k
-<span class="ln">76</span>
-<span class="ln">77</span><span class="kw">def</span> <span class="fn">depth</span>(solid, steps=6):
-<span class="ln">78</span>    <span class="cm">"""Puff normals from edge distance for 3D ASCII shading."""</span>
-<span class="ln">79</span>    d = np.zeros(solid.shape)
-<span class="ln">80</span>    edge = ~solid
-<span class="ln">81</span>    <span class="kw">for</span> k <span class="kw">in</span> range(steps):
-<span class="ln">82</span>        edge = grow(edge)
-<span class="ln">83</span>        d += ~edge
-<span class="ln">84</span>    <span class="kw">return</span> d / steps
-<span class="ln">85</span>
-<span class="ln">86</span>LIGHT = np.array([-0.45, -0.55, 0.70])  <span class="cm"># Top-left illumination</span>
-<span class="ln">87</span><span class="kw">def</span> <span class="fn">shade</span>(kind, puff):
-<span class="ln">88</span>    h = np.sqrt(np.clip(puff, 0, 1))
-<span class="ln">89</span>    gy, gx = np.gradient(h * 6)
-<span class="ln">90</span>    n = np.stack([-gx, -gy, np.ones_like(h)], -1)
-<span class="ln">91</span>    lit = np.clip(n @ (LIGHT / np.linalg.norm(LIGHT)), 0, 1)
-<span class="ln">92</span>    <span class="kw">return</span> np.clip(0.55 + 0.25 * lit + 0.25 * h, 0, 1)
-            </code></pre>
+          <div class="card-action-bar">
+            <span>Tecla [1]</span>
+            <span>Entrar a Christmas Tree ➔</span>
           </div>
         </div>
 
-        <!-- Barra lateral con Controles de Música y Letra -->
+        <div class="home-card hachi-card" onclick="switchView('hachiware')">
+          <div>
+            <div class="card-top-row">
+              <span class="card-badge">hachiware.py · ascii</span>
+              <span class="card-icon">🐱🎸</span>
+            </div>
+            <div class="card-title">Hachiware - ひとりごつ (ASCII)</div>
+            <div class="card-desc">
+              Animación ASCII de alta fluidez pre-renderizada desde cuadros de Python con audio sincronizado y letra bilingüe.
+            </div>
+          </div>
+          <div class="card-action-bar">
+            <span>Tecla [2]</span>
+            <span>Entrar a Hachiware ➔</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISTA 1: CHRISTMAS TREE 3D -->
+    <section id="view-tree" class="view-panel">
+      <canvas id="scene"></canvas>
+
+      <div class="scene-controls">
+        <button onclick="switchView('home')">🏠 Menú Principal</button>
+        <button onclick="toggleTreePause()" id="tree-play-btn">⏸ Pausar</button>
+        <button onclick="restartTree()">↺ Reiniciar</button>
+        <button onclick="takeTreeScreenshot()">📸 Captura</button>
+        <button onclick="switchView('hachiware')">🐱 Ir a Hachiware ➔</button>
+      </div>
+    </section>
+
+    <!-- VISTA 2: HACHIWARE ASCII -->
+    <section id="view-hachiware" class="view-panel">
+      <div class="hachiware-layout">
+        
+        <div class="canvas-wrapper">
+          <canvas id="hachi-canvas"></canvas>
+          <div class="scene-controls" style="position: static; transform: none; margin-top: 12px;">
+            <button onclick="switchView('home')">🏠 Menú Principal</button>
+            <button onclick="toggleHachiwarePlay()" id="hachi-canvas-play-btn">⏸ Pausar</button>
+            <button onclick="restartHachiware()">↺ Reiniciar</button>
+            <button onclick="takeHachiScreenshot()">📸 Captura</button>
+          </div>
+        </div>
+
         <div class="hachiware-sidebar">
-          
-          <!-- Controles de Reproducción y Audio -->
           <div class="panel-card">
             <div class="panel-title">
-              <span>🎵 Reproductor & Canción</span>
-              <span style="font-size:11px; color:#94a3b8;">ひとりごつ (Hitorigotsu)</span>
+              <span>🎵 Pista de Audio</span>
+              <span style="font-size:11px; color:var(--pink);">ひとりごつ (Hitorigotsu)</span>
             </div>
 
             <div class="controls-row">
@@ -810,148 +609,82 @@
               <button class="action-btn" onclick="toggleMuteAudio()" id="hachi-mute-btn">
                 <span>🔊</span> Sonido
               </button>
-              <button class="action-btn" onclick="switchView('video')">
-                <span>🎬</span> Ver Video Completo
-              </button>
             </div>
 
             <div class="timeline-container">
               <span id="hachi-current-time">00:00</span>
-              <input type="range" class="timeline-slider" id="hachi-seek" min="0" max="25" step="0.1" value="0" oninput="seekHachiware(this.value)">
-              <span id="hachi-duration">00:25</span>
+              <input type="range" class="timeline-slider" id="hachi-seek" min="0" max="50" step="0.1" value="0" oninput="seekHachiware(this.value)">
+              <span id="hachi-duration">00:50</span>
             </div>
-            
-            <!-- Elemento de audio con la canción proporcionada -->
+
             <audio id="hachiware-audio" preload="auto">
-              <source src="music/hitorigotsu.mp3" type="audio/mpeg">
-              <source src="music/hitorigotsu.ogg" type="audio/ogg">
               <source src="music/Chiikawa canción sub español Hitorigotsu chiikawa ending #chiikawa #hachiware - EnzoInTheStars.m4a" type="audio/mp4">
+              <source src="music/hitorigotsu.mp3" type="audio/mpeg">
             </audio>
           </div>
 
-          <!-- Letra Sincronizada con Traducción al Español -->
-          <div class="panel-card" style="flex:1;">
+          <div class="panel-card">
             <div class="panel-title">
-              <span>📜 Letra Karaoke (Japonés + Español)</span>
-              <span style="font-size:11px; color:var(--cyan);">Sincronizada</span>
+              <span>📜 Letra Sincronizada</span>
+              <span style="font-size:11px; color:var(--cyan);">Japonés • Español</span>
             </div>
 
             <div class="lyrics-container" id="lyrics-box">
               <div class="lyric-item" data-time="0" onclick="seekHachiware(0)">
                 <div class="lyric-jp">なんだ もう朝かと ひとりごつ</div>
                 <div class="lyric-es">"¿Qué? ¿Ya es de mañana? Hablando solo..."</div>
-                <div class="lyric-time">00:00 - 00:05</div>
+                <div class="lyric-time">00:00 - 00:08</div>
               </div>
-              <div class="lyric-item" data-time="5" onclick="seekHachiware(5)">
+              <div class="lyric-item" data-time="8" onclick="seekHachiware(8)">
                 <div class="lyric-jp">焼けたパンにバター ぬりぬり</div>
                 <div class="lyric-es">"Untando mantequilla en el pan tostado..."</div>
-                <div class="lyric-time">00:05 - 00:09</div>
+                <div class="lyric-time">00:08 - 00:14</div>
               </div>
-              <div class="lyric-item" data-time="9" onclick="seekHachiware(9)">
+              <div class="lyric-item" data-time="14" onclick="seekHachiware(14)">
                 <div class="lyric-jp">やんだ雨は なんかしめって 生乾き</div>
                 <div class="lyric-es">"La lluvia cesó, pero todo sigue húmedo y a medio secar..."</div>
-                <div class="lyric-time">00:09 - 00:15</div>
+                <div class="lyric-time">00:14 - 00:21</div>
               </div>
-              <div class="lyric-item" data-time="15" onclick="seekHachiware(15)">
+              <div class="lyric-item" data-time="21" onclick="seekHachiware(21)">
                 <div class="lyric-jp">変な足跡 だと思ったら</div>
                 <div class="lyric-es">"Creí que era una huella extraña..."</div>
-                <div class="lyric-time">00:15 - 00:19</div>
+                <div class="lyric-time">00:21 - 00:26</div>
               </div>
-              <div class="lyric-item" data-time="19" onclick="seekHachiware(19)">
+              <div class="lyric-item" data-time="26" onclick="seekHachiware(26)">
                 <div class="lyric-jp">昨晩につけた足跡</div>
                 <div class="lyric-es">"¡Pero era la huella que dejé anoche!"</div>
-                <div class="lyric-time">00:19 - 00:23</div>
+                <div class="lyric-time">00:26 - 00:31</div>
               </div>
-              <div class="lyric-item" data-time="23" onclick="seekHachiware(23)">
+              <div class="lyric-item" data-time="31" onclick="seekHachiware(31)">
                 <div class="lyric-jp">やけに土が 水を含んで 生乾き</div>
                 <div class="lyric-es">"La tierra retiene tanta agua... a medio secar."</div>
-                <div class="lyric-time">00:23 - 00:25</div>
+                <div class="lyric-time">00:31 - 00:37</div>
+              </div>
+              <div class="lyric-item" data-time="37" onclick="seekHachiware(37)">
+                <div class="lyric-jp">ああ キンと冷えてる 缶々が</div>
+                <div class="lyric-es">"Ah, las latas están heladas y frías..."</div>
+                <div class="lyric-time">00:37 - 00:43</div>
+              </div>
+              <div class="lyric-item" data-time="43" onclick="seekHachiware(43)">
+                <div class="lyric-jp">ああ なんか冷たくて 汗と結露が混じって 靴を濡らしてる</div>
+                <div class="lyric-es">"Ah, qué frío, el sudor y el rocío se mezclan mojando mis zapatos..."</div>
+                <div class="lyric-time">00:43 - 00:50</div>
               </div>
             </div>
           </div>
-
         </div>
 
       </div>
-    </div>
-
-    <!-- VISTA 3: REPRODUCTOR DE VIDEO ORIGINAL -->
-    <div id="view-video" class="view-panel">
-      <div class="cinema-box">
-        <video id="main-video-player" src="video/hachiware.mp4" controls playsinline></video>
-      </div>
-      <div style="display:flex; gap:12px; align-items:center;">
-        <button class="action-btn primary" onclick="switchView('hachiware')">
-          🐱 Ir a Modo ASCII
-        </button>
-        <button class="action-btn" onclick="switchView('tree')">
-          🎄 Ir a Árbol de Navidad
-        </button>
-      </div>
-    </div>
+    </section>
   </main>
 
-  <!-- MODAL DE MENÚ PARA NAVEGAR FÁCILMENTE -->
-  <div class="modal-overlay" id="menu-modal" onclick="closeMenuModal(event)">
-    <div class="menu-modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h2>✨ SELECTOR DE ANIMACIONES ASCII ✨</h2>
-        <button class="close-btn" onclick="closeMenuModal()">&times;</button>
-      </div>
-      <div class="menu-grid">
-        
-        <!-- Tarjeta Árbol -->
-        <div class="menu-card" onclick="selectFromModal('tree')">
-          <div class="card-badge">3D ASCII ENGINE</div>
-          <div class="card-title">🎄 Árbol de Navidad 3D</div>
-          <div class="card-desc">
-            Árbol tridimensional interactivo con ramas fractales, nieve flotante, luces titilantes, estrella superior brillante y mensaje festivo navideño.
-          </div>
-          <div class="card-footer">
-            <span>[Tecla 1]</span>
-            <span>Ver animación ➔</span>
-          </div>
-        </div>
-
-        <!-- Tarjeta Hachiware -->
-        <div class="menu-card" onclick="selectFromModal('hachiware')">
-          <div class="card-badge">ASCII + AUDIO + CÓDIGO</div>
-          <div class="card-title">🐱 Hachiware - ひとりごつ</div>
-          <div class="card-desc">
-            La animación del video de Hachiware (Chiikawa) cantando y tocando guitarra acústica en ASCII coloreado con sincronización musical y editor de código en vivo.
-          </div>
-          <div class="card-footer">
-            <span>[Tecla 2]</span>
-            <span>Ver animación ➔</span>
-          </div>
-        </div>
-
-        <!-- Tarjeta Video Original -->
-        <div class="menu-card" onclick="selectFromModal('video')">
-          <div class="card-badge">VIDEO HD ORIGINAL</div>
-          <div class="card-title">🎬 Video Original Completo</div>
-          <div class="card-desc">
-            Visualizador directo en alta definición del video recibido con controles nativos de reproducción, pausa y avance.
-          </div>
-          <div class="card-footer">
-            <span>[Tecla 3]</span>
-            <span>Ver video ➔</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- Notificación Toast -->
   <div id="toast">Notificación</div>
 
-  <!-- Script del Árbol de Navidad 3D y Control del Menú -->
+  <!-- IMPORTAMOS TUS FRAMES DE PYTHON -->
+  <script src="hachiware_frames.js"></script>
+
   <script>
-    // ==========================================
-    // SISTEMA DE CONTROL DE MENÚ Y VISTAS
-    // ==========================================
-    let currentView = 'tree';
+    let currentView = 'home';
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -962,55 +695,31 @@
 
     function switchView(viewName) {
       currentView = viewName;
-      
-      // Actualizar pestañas
-      const tabs = document.querySelectorAll('.tab-btn');
-      tabs.forEach(tab => tab.classList.remove('active'));
 
-      if (viewName === 'tree') tabs[0].classList.add('active');
-      else if (viewName === 'hachiware') tabs[1].classList.add('active');
-      else if (viewName === 'video') tabs[2].classList.add('active');
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeTab = document.getElementById(`tab-${viewName}`);
+      if (activeTab) activeTab.classList.add('active');
 
-      // Actualizar paneles
-      document.getElementById('view-tree').classList.toggle('active', viewName === 'tree');
-      document.getElementById('view-hachiware').classList.toggle('active', viewName === 'hachiware');
-      document.getElementById('view-video').classList.toggle('active', viewName === 'video');
+      document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+      const activePanel = document.getElementById(`view-${viewName}`);
+      if (activePanel) activePanel.classList.add('active');
 
-      // Pausar o reanudar según la vista
-      const hachiVideo = document.getElementById('hachiware-video');
       const hachiAudio = document.getElementById('hachiware-audio');
-      const mainVideo = document.getElementById('main-video-player');
 
       if (viewName === 'hachiware') {
-        hachiVideo.play().catch(() => {});
-        hachiAudio.play().catch(() => {});
-        updateHachiwareButton(true);
-        mainVideo.pause();
-        showToast("🐱 Animación de Hachiware iniciada");
-      } else if (viewName === 'video') {
-        hachiVideo.pause();
-        hachiAudio.pause();
-        mainVideo.play().catch(() => {});
-        showToast("🎬 Reproduciendo Video Original");
+        isHachiPaused = false;
+        hachiAudio.play().then(() => {
+          updateHachiwareButton(true);
+        }).catch(() => {
+          updateHachiwareButton(false);
+          showToast("Presiona Reproducir para iniciar el audio");
+        });
+        showToast("🐱 Hachiware ASCII iniciado");
       } else {
-        hachiVideo.pause();
         hachiAudio.pause();
-        mainVideo.pause();
-        showToast("🎄 Árbol de Navidad 3D activo");
+        updateHachiwareButton(false);
+        if (viewName === 'tree') showToast("🎄 Christmas Tree 3D iniciado");
       }
-    }
-
-    function openMenuModal() {
-      document.getElementById('menu-modal').classList.add('open');
-    }
-
-    function closeMenuModal(e) {
-      document.getElementById('menu-modal').classList.remove('open');
-    }
-
-    function selectFromModal(viewName) {
-      closeMenuModal();
-      switchView(viewName);
     }
 
     function toggleCRT() {
@@ -1028,137 +737,29 @@
       }
     }
 
-    // Atajos de teclado rápidos
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT') return;
-      if (e.key === '1') switchView('tree');
+      if (e.key === '0' || e.key === 'm' || e.key === 'M' || e.key === 'Escape') switchView('home');
+      else if (e.key === '1') switchView('tree');
       else if (e.key === '2') switchView('hachiware');
-      else if (e.key === '3') switchView('video');
-      else if (e.key === 'm' || e.key === 'M') {
-        const modal = document.getElementById('menu-modal');
-        modal.classList.contains('open') ? closeMenuModal() : openMenuModal();
-      } else if (e.key === ' ' || e.code === 'Space') {
+      else if (e.key === ' ' || e.code === 'Space') {
         e.preventDefault();
         if (currentView === 'tree') toggleTreePause();
         else if (currentView === 'hachiware') toggleHachiwarePlay();
+      } else if (e.key === 'r' || e.key === 'R') {
+        if (currentView === 'tree') restartTree();
+        else if (currentView === 'hachiware') restartHachiware();
+      } else if (e.key === 's' || e.key === 'S') {
+        if (currentView === 'tree') takeTreeScreenshot();
+        else if (currentView === 'hachiware') takeHachiScreenshot();
       } else if (e.key === 'f' || e.key === 'F') {
         toggleFullscreen();
       }
     });
 
-    // ==========================================
-    // REPRODUCTOR HACHIWARE Y SINCRONIZACIÓN
-    // ==========================================
-    const hachiVideo = document.getElementById('hachiware-video');
-    const hachiAudio = document.getElementById('hachiware-audio');
-    const hachiTimeHud = document.getElementById('hachi-time-hud');
-    const hachiShotInfo = document.getElementById('hachi-shot-info');
-    const hachiLetters = document.getElementById('hachi-letters');
-    const hachiSeek = document.getElementById('hachi-seek');
-    const hachiCurrentTime = document.getElementById('hachi-current-time');
-    const codeBox = document.getElementById('code-scroll-box');
-    const lyricItems = document.querySelectorAll('.lyric-item');
-
-    // Mapeo aproximado de tomas en el video
-    const SHOTS = [
-      { t: 0.0, shot: "shot 01/25", letters: "7,159" },
-      { t: 5.5, shot: "shot 02/25", letters: "6,177" },
-      { t: 8.2, shot: "shot 03/25", letters: "6,840" },
-      { t: 13.0, shot: "shot 04/25", letters: "5,512" },
-      { t: 16.5, shot: "shot 05/25", letters: "6,420" },
-      { t: 19.8, shot: "shot 06/25", letters: "7,011" },
-      { t: 22.5, shot: "shot 07/25", letters: "6,190" },
-      { t: 24.0, shot: "shot 08/25", letters: "6,890" }
-    ];
-
-    function toggleHachiwarePlay() {
-      if (hachiVideo.paused) {
-        hachiVideo.play();
-        hachiAudio.play();
-        updateHachiwareButton(true);
-      } else {
-        hachiVideo.pause();
-        hachiAudio.pause();
-        updateHachiwareButton(false);
-      }
-    }
-
-    function updateHachiwareButton(isPlaying) {
-      const btn = document.getElementById('hachi-play-btn');
-      btn.innerHTML = isPlaying ? '<span>⏸</span> Pausar' : '<span>▶</span> Reproducir';
-    }
-
-    function restartHachiware() {
-      hachiVideo.currentTime = 0;
-      hachiAudio.currentTime = 0;
-      hachiVideo.play();
-      hachiAudio.play();
-      updateHachiwareButton(true);
-    }
-
-    function toggleMuteAudio() {
-      hachiAudio.muted = !hachiAudio.muted;
-      hachiVideo.muted = !hachiVideo.muted;
-      const btn = document.getElementById('hachi-mute-btn');
-      btn.innerHTML = hachiAudio.muted ? '<span>🔇</span> Silenciado' : '<span>🔊</span> Sonido';
-    }
-
-    function seekHachiware(seconds) {
-      hachiVideo.currentTime = seconds;
-      hachiAudio.currentTime = seconds;
-    }
-
-    // Sincronización continua de video, audio, letra y HUD
-    hachiVideo.addEventListener('timeupdate', () => {
-      const cur = hachiVideo.currentTime;
-      hachiTimeHud.textContent = `• t ${cur.toFixed(2).padStart(5, '0')}s`;
-      hachiSeek.value = cur;
-
-      const m = Math.floor(cur / 60);
-      const s = Math.floor(cur % 60);
-      hachiCurrentTime.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-
-      // Detectar toma actual
-      let currentShot = SHOTS[0];
-      for (let i = SHOTS.length - 1; i >= 0; i--) {
-        if (cur >= SHOTS[i].t) {
-          currentShot = SHOTS[i];
-          break;
-        }
-      }
-      hachiShotInfo.textContent = `${currentShot.shot}  ♪ ひとりごつ`;
-      hachiLetters.textContent = `letters ${currentShot.letters}`;
-
-      // Desplazamiento suave del visor de código
-      if (codeBox) {
-        const maxScroll = codeBox.scrollHeight - codeBox.clientHeight;
-        const progress = (cur % 25) / 25;
-        codeBox.scrollTop = progress * maxScroll;
-      }
-
-      // Sincronización de Letras
-      lyricItems.forEach(item => {
-        const lTime = parseFloat(item.dataset.time);
-        const nextItem = item.nextElementSibling;
-        const nextTime = nextItem ? parseFloat(nextItem.dataset.time) : 25;
-        if (cur >= lTime && cur < nextTime) {
-          if (!item.classList.contains('active')) {
-            lyricItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        }
-      });
-
-      // Mantener sincronía de audio
-      if (Math.abs(hachiAudio.currentTime - cur) > 0.3) {
-        hachiAudio.currentTime = cur;
-      }
-    });
-
-    // ==========================================
-    // ÁRBOL DE NAVIDAD 3D (CANVAS ENGINE)
-    // ==========================================
+    /* =========================================================================
+       MOTOR 1: CHRISTMAS TREE 3D ASCII
+       ========================================================================= */
     const CW = 9, CH = 14, FONT_PX = 14;
     const COLS = 88, ROWS = 74;
     const W = COLS * CW, H = ROWS * CH;
@@ -1275,7 +876,6 @@
         }
       }
 
-      // Tronco
       for (let i = 0; i < 900; i++) {
         const y = (Y0 * i) / 899;
         const th = rng() * TAU;
@@ -1283,7 +883,6 @@
         addPt(rad * Math.cos(th), y, rad * Math.sin(th), TRUNK, 0.1 + 0.3 * (y / Y0), 0.5, rng() * TAU);
       }
 
-      // Espiral de Guirnalda
       const nSp = 1300;
       for (let i = 0; i < nSp; i++) {
         const u = i / (nSp - 1);
@@ -1293,7 +892,6 @@
         addPt(rCone * Math.cos(a), y, rCone * Math.sin(a), TINSEL, 6.0 + 2.5 * u, 0.95, a);
       }
 
-      // Bolas y Esferas
       tips.sort((a, b) => b.r - a.r);
       const chosenTips = tips.filter((_, idx) => idx % 2 === 0).slice(0, 48);
       const sphereUnits = fibSphere(24);
@@ -1308,7 +906,6 @@
         });
       });
 
-      // Luces titilantes
       for (let i = 0; i < 75; i++) {
         const u = Math.pow(rng(), 0.7);
         const y = Y0 + (Y1 - Y0 - 0.08) * u;
@@ -1318,7 +915,6 @@
         addPt(rCone * Math.cos(a), y, rCone * Math.sin(a), col, 5.0 + 3.0 * rng(), 1.0, rng() * TAU);
       }
 
-      // Regalos debajo del árbol
       const gifts = [
         [-0.42, 0.0, 0.22, 0.22, 0.18, 0.20, RED, GOLD],
         [0.32, 0.0, -0.18, 0.26, 0.16, 0.24, GREEN_BOX, RED],
@@ -1345,8 +941,6 @@
     }
 
     const pts = buildScene();
-
-    // Copos de Nieve
     const N_SNOW = 140;
     const snowX = new Float32Array(N_SNOW);
     const snowY = new Float32Array(N_SNOW);
@@ -1364,12 +958,11 @@
       }
     }
 
-    // Canvas Setup
     const canvas = document.getElementById("scene");
     const ctx = canvas.getContext("2d");
     canvas.width = W;
     canvas.height = H;
-    ctx.font = `${FONT_PX}px ${var_mono = 'Consolas, Menlo, "DejaVu Sans Mono", monospace'}`;
+    ctx.font = `${FONT_PX}px Consolas, Menlo, "DejaVu Sans Mono", monospace`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
@@ -1428,11 +1021,8 @@
       putChar(Math.round(cy), Math.round(cx), "@", WHITE, 1.2 + flash);
     }
 
-    // Animation Loop
-    let lastTime = performance.now();
     let t = 0.0;
     let isTreePaused = false;
-    let fps = 30;
 
     function toggleTreePause() {
       isTreePaused = !isTreePaused;
@@ -1447,19 +1037,206 @@
 
     function takeTreeScreenshot() {
       const link = document.createElement('a');
-      link.download = `ascii_christmas_tree_${Date.now()}.png`;
+      link.download = `christmas_tree_${Date.now()}.png`;
       link.href = canvas.toDataURL();
       link.click();
-      showToast("Captura descargada con éxito");
+      showToast("Captura descargada");
     }
 
-    function frame(now) {
+    /* =========================================================================
+       MOTOR 2: HACHIWARE PRE-RENDERIZADO DESDE hachiware_frames.js (ULTRA FLUIDO)
+       ========================================================================= */
+    const hCanvas = document.getElementById("hachi-canvas");
+    const hCtx = hCanvas.getContext("2d");
+
+    const H_DATA = window.HACHIWARE_ASCII || { cols: 96, rows: 64, fps: 15, palette: [], frames: [] };
+    const H_COLS = H_DATA.cols;
+    const H_ROWS = H_DATA.rows;
+    const H_FPS = H_DATA.fps || 15;
+    const HCW = 8, HCH = 13, HFONT = 12;
+    const H_W = H_COLS * HCW;
+    const H_H = H_ROWS * HCH + 36; // Espacio extra arriba para el HUD
+
+    hCanvas.width = H_W;
+    hCanvas.height = H_H;
+
+    // Pre-renderizamos los cuadros en memoria (Offscreen Canvases) para 0 lag
+    const cachedHachiFrames = [];
+    const frameLetterCounts = [];
+
+    function preRenderHachiFrames() {
+      if (!H_DATA.frames || H_DATA.frames.length === 0) return;
+
+      const paletteCss = H_DATA.palette.map(rgb => `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`);
+
+      H_DATA.frames.forEach((frame) => {
+        const off = document.createElement('canvas');
+        off.width = H_W;
+        off.height = H_H;
+        const octx = off.getContext('2d');
+
+        octx.fillStyle = "#0a0c12";
+        octx.fillRect(0, 0, H_W, H_H);
+
+        octx.font = `bold ${HFONT}px Consolas, Menlo, "DejaVu Sans Mono", monospace`;
+        octx.textAlign = "center";
+        octx.textBaseline = "middle";
+
+        let count = 0;
+        const yOffset = 34;
+
+        for (let r = 0; r < H_ROWS; r++) {
+          const rowChars = frame.c[r];
+          const rowColors = frame.k[r];
+          const yPos = yOffset + r * HCH + HCH / 2;
+
+          for (let c = 0; c < H_COLS; c++) {
+            const ch = rowChars[c];
+            if (ch === " ") continue;
+            count++;
+            octx.fillStyle = paletteCss[rowColors[c]] || "#e2e8f0";
+            octx.fillText(ch, c * HCW + HCW / 2, yPos);
+          }
+        }
+
+        cachedHachiFrames.push(off);
+        frameLetterCounts.push(count);
+      });
+    }
+
+    preRenderHachiFrames();
+
+    const hAudio = document.getElementById('hachiware-audio');
+    const hTimeHud = document.getElementById('hachi-current-time');
+    const hDurHud = document.getElementById('hachi-duration');
+    const hSeek = document.getElementById('hachi-seek');
+    const lyricItems = document.querySelectorAll('.lyric-item');
+
+    let hTime = 0.0;
+    let isHachiPaused = false;
+
+    hAudio.addEventListener('loadedmetadata', () => {
+      if (!isNaN(hAudio.duration) && isFinite(hAudio.duration)) {
+        hSeek.max = hAudio.duration;
+        const m = Math.floor(hAudio.duration / 60);
+        const s = Math.floor(hAudio.duration % 60);
+        hDurHud.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+      }
+    });
+
+    function toggleHachiwarePlay() {
+      if (hAudio.paused) {
+        hAudio.play();
+        isHachiPaused = false;
+        updateHachiwareButton(true);
+      } else {
+        hAudio.pause();
+        isHachiPaused = true;
+        updateHachiwareButton(false);
+      }
+    }
+
+    function updateHachiwareButton(isPlaying) {
+      const btn1 = document.getElementById('hachi-play-btn');
+      const btn2 = document.getElementById('hachi-canvas-play-btn');
+      btn1.innerHTML = isPlaying ? '<span>⏸</span> Pausar' : '<span>▶</span> Reproducir';
+      btn2.textContent = isPlaying ? '⏸ Pausar' : '▶ Reanudar';
+    }
+
+    function restartHachiware() {
+      hAudio.currentTime = 0;
+      hTime = 0;
+      hAudio.play();
+      isHachiPaused = false;
+      updateHachiwareButton(true);
+    }
+
+    function toggleMuteAudio() {
+      hAudio.muted = !hAudio.muted;
+      const btn = document.getElementById('hachi-mute-btn');
+      btn.innerHTML = hAudio.muted ? '<span>🔇</span> Silenciado' : '<span>🔊</span> Sonido';
+    }
+
+    function seekHachiware(seconds) {
+      hAudio.currentTime = parseFloat(seconds);
+      hTime = parseFloat(seconds);
+    }
+
+    function takeHachiScreenshot() {
+      const link = document.createElement('a');
+      link.download = `hachiware_ascii_${Date.now()}.png`;
+      link.href = hCanvas.toDataURL();
+      link.click();
+      showToast("Captura de Hachiware descargada");
+    }
+
+    function renderHachiwareAscii(time, currentFps) {
+      if (cachedHachiFrames.length === 0) {
+        hCtx.fillStyle = "#0a0c12";
+        hCtx.fillRect(0, 0, H_W, H_H);
+        hCtx.fillStyle = "#ffc45a";
+        hCtx.font = "14px Consolas, monospace";
+        hCtx.fillText("No se encontró hachiware_frames.js en la misma carpeta.", 20, 40);
+        return;
+      }
+
+      const frameIdx = Math.floor(time * H_FPS) % cachedHachiFrames.length;
+      hCtx.drawImage(cachedHachiFrames[frameIdx], 0, 0);
+
+      // HUD superior (renderizado instantáneo sobre el frame cacheado)
+      hCtx.font = `bold 12px Consolas, Menlo, "DejaVu Sans Mono", monospace`;
+      hCtx.textAlign = "left";
+      hCtx.fillStyle = "#e2e8f0";
+      hCtx.fillText(`hachiware.py · ascii  |  frame ${String(frameIdx + 1).padStart(2, "0")}/${cachedHachiFrames.length}  ♪ ひとりごつ`, 14, 18);
+
+      hCtx.textAlign = "right";
+      hCtx.fillStyle = "#ffc45a";
+      hCtx.fillText(`• t ${time.toFixed(2).padStart(5, "0")}s  • ${Math.round(currentFps)} fps`, H_W - 14, 18);
+      hCtx.textAlign = "center";
+    }
+
+    hAudio.addEventListener('timeupdate', () => {
+      const cur = hAudio.currentTime;
+      hTime = cur;
+      hSeek.value = cur;
+
+      const m = Math.floor(cur / 60);
+      const s = Math.floor(cur % 60);
+      hTimeHud.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+
+      lyricItems.forEach(item => {
+        const lTime = parseFloat(item.dataset.time);
+        const nextItem = item.nextElementSibling;
+        const nextTime = nextItem ? parseFloat(nextItem.dataset.time) : 999;
+        if (cur >= lTime && cur < nextTime) {
+          if (!item.classList.contains('active')) {
+            lyricItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      });
+    });
+
+    hAudio.addEventListener('ended', () => {
+      updateHachiwareButton(false);
+    });
+
+    /* =========================================================================
+       BUCLE PRINCIPAL
+       ========================================================================= */
+    let lastTime = performance.now();
+    let fps = 60;
+
+    function mainLoop(now) {
       const dt = Math.min(0.1, (now - lastTime) / 1000);
       lastTime = now;
+      if (dt > 0) {
+        fps = fps * 0.9 + (1.0 / dt) * 0.1;
+      }
 
-      if (!isTreePaused && currentView === 'tree') {
+      if (currentView === 'tree' && !isTreePaused) {
         t += dt;
-        fps = fps * 0.9 + (1.0 / (dt || 0.033)) * 0.1;
 
         for (let i = 0; i < N_SNOW; i++) {
           snowY[i] = (snowY[i] + snowV[i] * dt) % ROWS;
@@ -1471,12 +1248,10 @@
           colBuf[r].fill("#000000");
         }
 
-        // Nieve
         for (let i = 0; i < N_SNOW; i++) {
           putChar(Math.floor(snowY[i]), Math.floor(snowX[i]), String.fromCharCode(snowC[i]), WHITE, 0.55);
         }
 
-        // Árbol 3D
         const aspect = (CH / CW) * (COLS / ROWS);
         const yaw = t * 0.52;
 
@@ -1502,14 +1277,12 @@
           putChar(pt.sy, pt.sx, ch, [pt.r, pt.g, pt.b], bright);
         }
 
-        // Estrella
         if (t >= T_STAR) {
           const flash = Math.pow(Math.max(0, 1.0 - (t - T_STAR) / 1.0), 2);
           const pStar = project(0.0, Y1 + 0.09, 0.0, yaw, aspect);
           star(pStar.sx, pStar.sy, 4.2, t, Math.min(1.0, (t - T_STAR) / 0.8), flash);
         }
 
-        // Mensaje Festivo
         if (t >= T_MSG) {
           const rowId = ROWS - 9;
           const col0 = Math.floor((COLS - MESSAGE.length) / 2);
@@ -1526,7 +1299,6 @@
           }
         }
 
-        // Dibujar en Canvas
         ctx.fillStyle = "#0a0c12";
         ctx.fillRect(0, 0, W, H);
 
@@ -1541,7 +1313,6 @@
           }
         }
 
-        // HUD
         ctx.textAlign = "right";
         ctx.fillStyle = "#ffc45a";
         ctx.fillText(`• t ${t.toFixed(2).padStart(5, "0")}s  • ${Math.round(fps)} fps`, W - 14, 16);
@@ -1553,10 +1324,21 @@
         ctx.textAlign = "center";
       }
 
-      requestAnimationFrame(frame);
+      if (currentView === 'hachiware') {
+        const isSinging = !hAudio.paused;
+        if (isSinging) {
+          hTime = hAudio.currentTime || (hTime + dt);
+        } else if (!isHachiPaused) {
+          // Si el audio no ha cargado o no inició por bloqueo del navegador, la animación sigue fluida igual
+          hTime += dt;
+        }
+        renderHachiwareAscii(hTime, fps);
+      }
+
+      requestAnimationFrame(mainLoop);
     }
 
-    requestAnimationFrame(frame);
+    requestAnimationFrame(mainLoop);
   </script>
 </body>
 </html>
