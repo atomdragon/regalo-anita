@@ -8,7 +8,7 @@ CW, CH, FONT_PX = 9, 14, 15
 COLS, ROWS = 88, 74
 W, H = COLS * CW, ROWS * CH
 MONO = "consolas,menlo,dejavusansmono,couriermonospace,monospace"
-HINT = "Space pause • R restart • S screenshot • Esc quit"
+HINT = "Space pause • R restart • S screenshot • Esc menú"
 DIM, ACCENT, SIGN = (96, 104, 122), (255, 196, 90), (170, 180, 196)
 
 # --- Constantes de geometría y escena ---
@@ -248,7 +248,7 @@ class Renderer:
         pygame.surfarray.blit_array(screen, img.transpose(1, 0, 2))
 
 
-def main():
+def main(standalone=True):
     pygame.init()
     screen = pygame.display.set_mode((W, H))
     pygame.display.set_caption(TITLE)
@@ -340,8 +340,9 @@ def main():
 
         pygame.display.flip()
 
-    pygame.quit()
+    if standalone:
+        pygame.quit()
 
 
 if __name__ == "__main__":
-    main()
+    main(standalone=True)
