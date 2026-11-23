@@ -1,7 +1,7 @@
 // See: docs/decisions/0001-escenas.md
-import * as tree from './tree.js';
-import * as hachi from './hachiware.js';
-import {showTreeMusic} from './tree-music.js';
+import * as tree from './tree.js?v=20261123-2';
+import * as hachi from './hachiware.js?v=20261123-2';
+import {showTreeMusic} from './tree-music.js?v=20261123-2';
 let view='home';
 window.switchView=function(name){view=name;document.body.classList.toggle('home-mode',name==='home');document.querySelectorAll('.view-panel').forEach(p=>p.classList.toggle('active',p.id==='view-'+name));document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.toggle('active',b.id==='tab-'+name);if(b.id==='tab-'+name)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});tree.show(name==='tree');showTreeMusic(name==='tree');hachi.show(name==='hachiware');document.querySelector(name==='home'?'#home-title':'#tab-'+name)?.focus({preventScroll:true});};
 Object.assign(window,{toggleTreePause:tree.pause,toggleTreeRotation:tree.toggleRotation,restartTree:tree.restart,resetTreeCamera:tree.reset,takeTreeScreenshot:tree.capture,toggleHachiwarePlay:hachi.play,restartHachiware:hachi.restart,toggleMuteAudio:hachi.mute,seekHachiware:hachi.seek,takeHachiScreenshot:hachi.capture,toggleFullscreen:()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen(),toggleHomeSnow:b=>{const p=document.body.classList.toggle('snow-paused');b.setAttribute('aria-pressed',p);b.textContent=p?'Reanudar nieve':'Pausar nieve';}});
