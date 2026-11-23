@@ -29,12 +29,12 @@ export function init(){
  for(let i=0;i<55;i++){const y=1+(i%11)*.42,a=i*2.4,r=2.6*(1-y/7);const ball=mesh(new T.SphereGeometry(.13,12,8),[0x7cbee8,0xffffff,0xc5d4e0][i%3],tree);ball.material.metalness=.7;ball.position.set(Math.cos(a)*r,y,Math.sin(a)*r);}
  const shape=new T.Shape();for(let i=0;i<10;i++){const a=i*Math.PI/5+Math.PI/2,r=i%2?.22:.5;const x=Math.cos(a)*r,y=Math.sin(a)*r;i?shape.lineTo(x,y):shape.moveTo(x,y);}shape.closePath();star=mesh(new T.ExtrudeGeometry(shape,{depth:.12,bevelEnabled:false}),0xffd978,tree);star.position.set(0,6.4,0);star.material.emissive.set(0xffce58);
  for(let i=0;i<7;i++){const gift=mesh(new T.BoxGeometry(.6,.5,.6),[0xa1d6f3,0xf2d4e1,0xffffff][i%3]);gift.position.set(Math.cos(i)*3,.25,Math.sin(i)*3);const ribbon=mesh(new T.BoxGeometry(.1,.52,.62),0xffffff,gift);}
- new T.TextureLoader().load('images/_.jpeg',tex=>{tex.colorSpace=T.SRGBColorSpace;const pic=new T.Sprite(new T.SpriteMaterial({map:tex}));pic.position.set(-3.4,1,1);pic.scale.set(1.5,1.5,1);scene.add(pic);});
+ new T.TextureLoader().load('images/hachiware-navidad.jpeg',tex=>{tex.colorSpace=T.SRGBColorSpace;const pic=new T.Sprite(new T.SpriteMaterial({map:tex}));pic.position.set(-3.4,1,1);pic.scale.set(1.5,1.5,1);scene.add(pic);});
  const count=innerWidth<650?350:850;const pos=new Float32Array(count*3);for(let i=0;i<pos.length;i+=3){pos[i]=(Math.random()-.5)*24;pos[i+1]=Math.random()*15;pos[i+2]=(Math.random()-.5)*24;}
  const geo=new T.BufferGeometry();geo.setAttribute('position',new T.BufferAttribute(pos,3));snow=new T.Points(geo,new T.PointsMaterial({color:0xffffff,size:.075,transparent:true,opacity:.85}));scene.add(snow);
  composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,camera));composer.addPass(new UnrealBloomPass(new T.Vector2(400,300),.22,.35,2));composer.addPass(new OutputPass());
  new ResizeObserver(resize).observe(host);resize();
- }catch(e){host.innerHTML='<img src="images/_.jpeg" alt="Hachiware navideño"><p>No se pudo iniciar el árbol 3D en este dispositivo.</p>';console.warn(e);}
+ }catch(e){host.innerHTML='<img src="images/hachiware-navidad.jpeg" alt="Hachiware navideño"><p>No se pudo iniciar el árbol 3D en este dispositivo.</p>';console.warn(e);}
 }
 function resize(){if(!renderer||!host.clientWidth)return;const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h);composer?.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();}
 function frame(now){raf=0;if(!active||document.hidden||!composer)return;const dt=Math.min((now-last)/1000,.05);last=now;if(!paused&&!reduce.matches)time+=dt;
