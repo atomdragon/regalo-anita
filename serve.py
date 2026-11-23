@@ -23,6 +23,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 def run_server():
     os.chdir(DIRECTORY)
+    socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), Handler) as httpd:
         url = f"http://localhost:{PORT}/index.html"
         print(f"==================================================")

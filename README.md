@@ -68,3 +68,29 @@ Luego abre tu navegador en: [http://localhost:8080/index.html](http://localhost:
 | `M` | Abrir / Cerrar Menú Selector Visual |
 | `Espacio` | Pausar / Reanudar animación |
 | `F` | Pantalla Completa |
+
+
+## Escenas web celestes
+
+Ejecutar `python3 serve.py` y abrir `http://localhost:8080/index.html`.
+
+El árbol web usa Three.js 0.181.2 y sus complementos oficiales, incluidos localmente bajo `vendor/three` con licencia MIT. No necesita red al ejecutarse. La implementación está separada en `js/app.js`, `js/tree.js` y `js/hachiware.js`.
+
+Hachiware carga 750 cuadros ASCII de 96×105 a 30 fps al abrir su pestaña; mantiene como máximo 12 lienzos en caché. La canción completa gobierna el tiempo y los cuadros se repiten cada 25 segundos. Para regenerarlos: `.venv/bin/python scripts/build_ascii_web.py`.
+
+Los subtítulos de `subtitles/hitorigotsu.vtt` cubren las frases cantadas del audio local hasta 01:25.280, con silencios sin texto. Se obtuvieron mediante faster-whisper small (CPU int8) y se corrigieron errores ortográficos del reconocimiento; la traducción al español se elaboró a partir de esa transcripción. Los tiempos son automáticos y no equivalen a una revisión humana de precisión. Referencia localizada de la canción: https://utaten.com/lyric/mi22062929/ . La letra no se importó de esa página.
+
+El reproductor usa toda la frecuencia de cuadros disponible, sin controles técnicos de calidad ni avisos de repetición en la interfaz.
+
+Validación realizada: sintaxis JS y Python, integridad de 750 cuadros / 25 segundos, navegación y atajos, reproducción/pausa/búsqueda, idiomas y limpieza de subtítulos fuera de intervalo, anchos 360/768/1440 y consola del navegador. Movimiento reducido y fallo WebGL tienen tratamiento implementado, sin simulación manual en esta revisión.
+
+
+### Karaoke y volumen del teléfono
+La letra está abierta y utiliza `subtitles/hitorigotsu-karaoke.json`: intervalos de caracteres derivados de los tiempos de palabras de faster-whisper sobre el audio local. La división interna de cada palabra es interpolada; no es alineación fonética manual. El japonés cantado se resalta progresivamente y el español también se resalta por carácter con tiempos aproximados distribuidos sobre la actividad vocal de cada frase. El panel sigue la frase activa sin desplazar la página.
+
+Se eliminó la atenuación propia y el deslizador de volumen: el audio pasa al nivel multimedia del dispositivo, controlado con sus botones. El navegador no lee ni modifica el volumen global del teléfono; Silenciar continúa siendo independiente. La comprobación fue en navegador de escritorio, no en un teléfono físico.
+
+
+La pestaña del árbol reproduce el archivo local `music/last-christmas.mp3`, generado a partir de `music/Last Christmas - Wham!.flac` conservando el original. Se omiten los primeros 17.8 segundos: la primera voz se detectó en 17.96 s con faster-whisper small. Al entrar comienza desde esa frase y continúa; al salir se pausa y se prepara para volver al inicio. Los controles nativos permiten iniciar la canción si el navegador bloquea el inicio automático. No requiere YouTube ni conexión.
+
+Regeneración: `ffmpeg -ss 17.8 -i 'music/Last Christmas - Wham!.flac' -codec:a libmp3lame -q:a 2 music/last-christmas.mp3`.

@@ -3,13 +3,15 @@ import cv2
 import numpy as np
 from scipy.ndimage import distance_transform_edt
 
-VIDEO_IN = "temp_hachiware.mp4"
-OUT_JS = "hachiware_frames.js"
+from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+VIDEO_IN = str(ROOT / "video/hachiware.mp4")
+OUT_JS = str(ROOT / "hachiware_frames.js")
 
 # Resolución de la cuadrícula ASCII (9:16 o 4:3 centrado)
 COLS = 96
-ROWS = 64
-TARGET_FPS = 15  # 15 fps mantiene el archivo ligero (~3-4 MB) y muy fluido en web
+ROWS = 105
+TARGET_FPS = 30  # La web carga los datos al entrar; solo renderiza 12 cuadros en caché.
 MAX_SECONDS = 25 # Duración del clip (puedes subirlo hasta 83 para toda la canción)
 
 RAMP = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
@@ -93,7 +95,7 @@ def compute_ascii_frame(frame_bgr):
 def main():
     cap = cv2.VideoCapture(VIDEO_IN)
     src_fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
-    step = max(1, round(src_fps / TARGET_FPS))
+    step = src_fps / TARGET_FPS
     max_frames = int(MAX_SECONDS * TARGET_FPS)
 
     frames = []
@@ -102,7 +104,7 @@ def main():
         ret, frame = cap.read()
         if not ret:
             break
-        if frame_idx % step == 0:
+        if frame_idx >= len(frames) * step:
             frames.append(compute_ascii_frame(frame))
             if len(frames) % 30 == 0:
                 print(f"Procesados {len(frames)}/{max_frames} fotogramas...")
