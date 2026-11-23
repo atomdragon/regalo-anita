@@ -524,6 +524,25 @@
     .tree-music {width:min(480px,calc(100% - 32px));margin:20px auto;padding:16px;border:1px solid #b7d9ec;border-radius:22px;background:white;text-align:center;}
     .tree-music h2 {font-size:18px;margin-bottom:12px;}.tree-music iframe {display:block;width:100%;height:auto;aspect-ratio:16/9;min-height:200px;border:0;border-radius:12px;}
     .tree-music audio {display:block;width:100%;max-width:100%;}
+    @media(max-width:850px){
+      header {padding:12px 16px;gap:10px;}
+      .brand {font-size:16px;letter-spacing:0;}
+      .header-actions {margin-left:auto;}
+      .nav-tabs {order:3;flex:0 0 100%;justify-content:center;gap:4px;}
+      .tab-btn {padding:8px;font-size:13px;}
+    }
+    /* Keep the ASCII performance proportional and the controls reachable on small screens. */
+    #view-hachiware {padding:16px;align-items:flex-start;}
+    .hachiware-layout {display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,1fr);align-items:start;padding:8px;}
+    .canvas-wrapper,.hachiware-sidebar {width:100%;max-width:none;min-width:0;}
+    #hachi-canvas {display:block;width:min(100%,540px);height:auto;aspect-ratio:9/10;max-height:none;object-fit:contain;background:#070b10;}
+    @media(max-width:850px){
+      .hachiware-layout {display:flex;flex-direction:column;padding:0;gap:16px;}
+      #hachi-canvas {width:min(100%,430px,calc(52svh * .9));height:auto;max-height:none;}
+      .caption-box {min-height:76px;padding:10px;}
+      #view-hachiware .scene-controls {position:static;transform:none;}
+      .panel-card {padding:14px;}
+    }
   </style>
 </head>
 <body class="home-mode">
@@ -611,7 +630,7 @@
       <div class="scene-controls">
         <button onclick="switchView('home')">🏠 Menú Principal</button>
         <button onclick="toggleTreePause()" id="tree-play-btn">⏸ Pausar</button>
-        <button onclick="restartTree()">↺ Reiniciar</button>
+        <button id="tree-spin-btn" onclick="toggleTreeRotation()" aria-pressed="true">Detener giro</button><button onclick="restartTree()">↺ Reiniciar</button>
         <button onclick="resetTreeCamera()">Restablecer cámara</button><button onclick="takeTreeScreenshot()">📸 Captura</button>
         <button onclick="switchView('hachiware')">🐱 Ir a Hachiware ➔</button>
       </div>

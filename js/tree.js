@@ -5,7 +5,7 @@ import {EffectComposer} from '../vendor/three/addons/postprocessing/EffectCompos
 import {RenderPass} from '../vendor/three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from '../vendor/three/addons/postprocessing/UnrealBloomPass.js';
 import {OutputPass} from '../vendor/three/addons/postprocessing/OutputPass.js';
-let renderer,scene,camera,controls,composer,tree,lights,star,snow,raf=0,active=false,paused=false,time=0,last=0,slow=0;
+let renderer,scene,camera,controls,composer,tree,lights,star,snow,raf=0,active=false,paused=false,time=0,last=0,slow=0,spinning=!matchMedia('(prefers-reduced-motion: reduce)').matches;
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
 const host=document.querySelector('#tree-stage');
 function mesh(geo,color,parent=scene){const m=new T.Mesh(geo,new T.MeshStandardMaterial({color,roughness:.45,metalness:.15}));parent.add(m);return m;}
@@ -39,14 +39,18 @@ export function init(){
 function resize(){if(!renderer||!host.clientWidth)return;const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h);composer?.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();}
 function frame(now){raf=0;if(!active||document.hidden||!composer)return;const dt=Math.min((now-last)/1000,.05);last=now;if(!paused&&!reduce.matches)time+=dt;
  const t=reduce.matches?12:time;tree.scale.setScalar(Math.max(.001,Math.min(1,t/5)));lights.visible=t>5;star.visible=t>9;star.material.emissiveIntensity=t>9?2:0;
- controls.autoRotate=!paused&&!reduce.matches&&t>=12;controls.autoRotateSpeed=.35;controls.update(dt);
+ controls.autoRotate=false;controls.update(dt);
+ if(!paused&&spinning)tree.rotation.y+=dt*.32;
  if(!paused&&!reduce.matches){const a=snow.geometry.attributes.position;for(let i=1;i<a.array.length;i+=3){a.array[i]-=dt*.8;if(a.array[i]<0)a.array[i]=15;}a.needsUpdate=true;}
  if(dt>.04&&++slow>90){renderer.setPixelRatio(1);composer.passes[1].enabled=false;resize();slow=0;}
  composer.render();raf=requestAnimationFrame(frame);
 }
 export function show(value){active=value;if(value){init();last=performance.now();if(!raf)raf=requestAnimationFrame(frame);}else{cancelAnimationFrame(raf);raf=0;}}
 export function pause(){paused=!paused;document.querySelector('#tree-play-btn').textContent=paused?'Reanudar':'Pausar';}
-export function restart(){time=0;paused=false;document.querySelector('#tree-play-btn').textContent='Pausar';reset();}
+export function restart(){time=0;if(tree)tree.rotation.y=0;paused=false;document.querySelector('#tree-play-btn').textContent='Pausar';reset();}
 export function reset(){camera?.position.set(9,7,13);controls?.target.set(0,3,0);controls?.update();}
 export function capture(){if(renderer){const a=document.createElement('a');a.download='arbol-celeste.png';a.href=renderer.domElement.toDataURL();a.click();}}
 document.addEventListener('visibilitychange',()=>{if(active)show(true);});
+
+export function toggleRotation(){spinning=!spinning;const button=document.querySelector('#tree-spin-btn');button.textContent=spinning?'Detener giro':'Girar árbol';button.setAttribute('aria-pressed',String(spinning));}
+const spinButton=document.querySelector('#tree-spin-btn');spinButton.textContent=spinning?'Detener giro':'Girar árbol';spinButton.setAttribute('aria-pressed',String(spinning));

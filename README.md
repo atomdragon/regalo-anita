@@ -76,7 +76,7 @@ Ejecutar `python3 serve.py` y abrir `http://localhost:8080/index.html`.
 
 El árbol web usa Three.js 0.181.2 y sus complementos oficiales, incluidos localmente bajo `vendor/three` con licencia MIT. No necesita red al ejecutarse. La implementación está separada en `js/app.js`, `js/tree.js` y `js/hachiware.js`.
 
-Hachiware carga 750 cuadros ASCII de 96×105 a 30 fps al abrir su pestaña; mantiene como máximo 12 lienzos en caché. La canción completa gobierna el tiempo y los cuadros se repiten cada 25 segundos. Para regenerarlos: `.venv/bin/python scripts/build_ascii_web.py`.
+Hachiware conserva el ASCII original de `video/hachiware.mp4` y lo dibuja en un lienzo de 720×800, excluyendo el editor inferior. El video está silenciado: la canción completa gobierna el tiempo y la animación se repite cada 25 segundos. Ya no se descarga ni se vuelve a renderizar `hachiware_frames.js`. El generador independiente permanece disponible en `scripts/build_ascii_web.py`.
 
 Los subtítulos de `subtitles/hitorigotsu.vtt` cubren las frases cantadas del audio local hasta 01:25.280, con silencios sin texto. Se obtuvieron mediante faster-whisper small (CPU int8) y se corrigieron errores ortográficos del reconocimiento; la traducción al español se elaboró a partir de esa transcripción. Los tiempos son automáticos y no equivalen a una revisión humana de precisión. Referencia localizada de la canción: https://utaten.com/lyric/mi22062929/ . La letra no se importó de esa página.
 
@@ -94,3 +94,6 @@ Se eliminó la atenuación propia y el deslizador de volumen: el audio pasa al n
 La pestaña del árbol reproduce el archivo local `music/last-christmas.mp3`, generado a partir de `music/Last Christmas - Wham!.flac` conservando el original. Se omiten los primeros 17.8 segundos: la primera voz se detectó en 17.96 s con faster-whisper small. Al entrar comienza desde esa frase y continúa; al salir se pausa y se prepara para volver al inicio. Los controles nativos permiten iniciar la canción si el navegador bloquea el inicio automático. No requiere YouTube ni conexión.
 
 Regeneración: `ffmpeg -ss 17.8 -i 'music/Last Christmas - Wham!.flac' -codec:a libmp3lame -q:a 2 music/last-christmas.mp3`.
+
+
+Corrección móvil: el lienzo mantiene proporción 9:10 y un tamaño limitado por el ancho y alto de la pantalla. El árbol gira directamente sobre su eje a 0.32 rad/s desde su aparición; el control «Girar árbol / Detener giro» permite cambiarlo. Movimiento reducido desactiva el giro inicial, pero el control permite iniciarlo explícitamente. Pausar detiene también la rotación.

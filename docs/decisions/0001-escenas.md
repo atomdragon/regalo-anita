@@ -1,6 +1,6 @@
 # 0001 — Escenas locales y reloj de audio
 
-**Estado:** Aceptada
+**Estado:** Aceptada; la caché de cuadros se sustituye por [0002](0002-ascii-source.md).
 **Afecta:** js/tree.js, js/hachiware.js, js/app.js
 
 ## Contexto
